@@ -13,13 +13,21 @@ const Index = () => {
   const [showDemo, setShowDemo] = useState(false);
   const [currentQuery, setCurrentQuery] = useState("");
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (query: string, imageFile?: File, imageUrl?: string) => {
     setCurrentQuery(query);
     setIsLoading(true);
     
-    // Simulate API call delay
+    // Simulate API call delay with different messaging for image searches
     setTimeout(() => {
-      setSearchResults(mockSearchResults);
+      // Add image search indicator to results if image was used
+      const resultsWithImageTag = imageFile || imageUrl 
+        ? mockSearchResults.map(result => ({
+            ...result,
+            source: result.source + (query ? ' (Text + Image)' : ' (Image)')
+          }))
+        : mockSearchResults;
+      
+      setSearchResults(resultsWithImageTag);
       setIsLoading(false);
     }, 2000);
   };
