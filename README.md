@@ -1,5 +1,30 @@
 # Nexus-Web-Agent
 
+## How to run locally
+
+1. Copy `.env.example` to `.env.local` and fill in your Firebase configuration values
+2. Enable Google & Email/Password authentication in your Firebase console
+3. Run the following commands:
+
+```sh
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+## Test Authentication
+
+1. Go to `/auth`
+2. Click "Continue with Google"
+3. Allow permissions
+4. Should redirect to `/`
+
+## Security Notes
+
+**Do NOT commit `.env.local`.** The Firebase API key is safe to be public for client usage, but keep other credentials secret. Use Firebase rules for database security.
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
@@ -49,3 +74,4 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Firebase Authentication

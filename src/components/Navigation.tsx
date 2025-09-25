@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Bot, History, Search, FileText, LogIn, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
+import { onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,8 +14,24 @@ import {
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const location = useLocation();
-  const { user, signOut } = useAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await firebaseSignOut(auth);
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
   const navItems = [
     { path: "/", label: "Search", icon: Search },
@@ -79,7 +96,7 @@ export const Navigation = () => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 
-                    onClick={() => signOut()}
+                    onClick={handleSignOut}
                     className="flex items-center gap-2 text-destructive"
                   >
                     <LogOut className="w-4 h-4" />
@@ -148,7 +165,7 @@ export const Navigation = () => {
                       variant="outline" 
                       size="sm" 
                       onClick={() => {
-                        signOut();
+                        handleSignOut();
                         setIsOpen(false);
                       }}
                       className="w-full flex items-center gap-2"
