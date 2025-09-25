@@ -49,7 +49,7 @@ const Index = () => {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className="text-gradient-neural">WebNavigatorAI</span>
+              <span className="text-gradient-neural">NexusAI</span>
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
@@ -57,18 +57,6 @@ const Index = () => {
               explainable traces, and replayable automation scripts.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-              <button
-                onClick={() => setShowDemo(!showDemo)}
-                className="px-6 py-3 rounded-lg bg-secondary hover:bg-secondary/80 text-secondary-foreground font-medium transition-all duration-300 neural-glow"
-              >
-                {showDemo ? "Hide Demo" : "🎬 Demo Mode"}
-              </button>
-              
-              <div className="px-4 py-3 rounded-lg bg-muted/20 text-muted-foreground text-sm">
-                🔒 100% Local Processing • 🚀 Real-time Scraping • 🎯 Smart Ranking
-              </div>
-            </div>
           </div>
 
           {/* Demo Mode */}
@@ -112,7 +100,7 @@ const Index = () => {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-gradient-primary">
-            Why WebNavigatorAI?
+            Why NexusAI?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -148,6 +136,15 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="py-8 bg-muted/5 border-t border-border">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            © 2025 CodeCatalysts. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
