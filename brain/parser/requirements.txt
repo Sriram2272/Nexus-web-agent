@@ -1,0 +1,27 @@
+# NexusAI HTML Parser Dependencies
+
+# Core HTML parsing
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Price parsing
+price-parser>=0.3.4
+
+# Date parsing
+python-dateutil>=2.8.0
+
+# Data validation and serialization
+pydantic>=2.0.0
+
+# HTTP requests (for demo)
+requests>=2.31.0
+
+# Optional language detection
+langdetect>=1.0.9
+
+# Utilities
+typing-extensions>=4.7.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-mock>=3.11.0
