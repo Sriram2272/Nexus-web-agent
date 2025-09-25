@@ -7,28 +7,28 @@
 
 @layer base {
   :root {
-    /* Base Colors */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    /* Base Colors - Deeper Dark */
+    --background: 230 15% 2%;
+    --foreground: 0 0% 95%;
     
     /* Card Colors */
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 230 12% 4%;
+    --card-foreground: 0 0% 95%;
     
-    /* Primary - Cyber Blue */
-    --primary: 200 98% 39%;
+    /* Primary - Electric Blue */
+    --primary: 210 100% 60%;
     --primary-foreground: 0 0% 9%;
-    --primary-glow: 200 100% 50%;
+    --primary-glow: 210 100% 70%;
     
-    /* Secondary - Electric Purple */
-    --secondary: 271 81% 56%;
+    /* Secondary - Vibrant Purple */
+    --secondary: 280 90% 65%;
     --secondary-foreground: 0 0% 98%;
-    --secondary-glow: 271 100% 70%;
+    --secondary-glow: 280 100% 75%;
     
-    /* Accent - Neon Green */
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 98%;
-    --accent-glow: 142 84% 47%;
+    /* Accent - Bright Cyan */
+    --accent: 180 100% 50%;
+    --accent-foreground: 0 0% 9%;
+    --accent-glow: 180 100% 60%;
     
     /* Neutral Tones */
     --muted: 240 3.7% 15.9%;
@@ -61,10 +61,15 @@
     --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-glow)));
     --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-glow)));
     --gradient-neural: linear-gradient(135deg, 
-      hsl(240 15% 8%), 
-      hsl(235 20% 12%), 
-      hsl(230 25% 15%), 
-      hsl(225 30% 10%)
+      hsl(230 20% 1%), 
+      hsl(225 25% 3%), 
+      hsl(220 30% 5%), 
+      hsl(215 35% 2%)
+    );
+    --gradient-nexus: linear-gradient(135deg, 
+      hsl(210 100% 60%), 
+      hsl(280 90% 65%), 
+      hsl(180 100% 50%)
     );
     --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
     
@@ -176,19 +181,55 @@
     -webkit-mask-composite: xor;
   }
   
-  .text-gradient-primary {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+/* Utility Classes */
+.text-gradient-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-secondary {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-neural {
+  background: var(--gradient-nexus);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+.text-gradient-nexus {
+  background: var(--gradient-nexus);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.3));
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
   }
-  
-  .text-gradient-neural {
-    background: var(--gradient-neural);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  50% {
+    background-position: 100% 50%;
   }
+}
 }
 
 @layer base {

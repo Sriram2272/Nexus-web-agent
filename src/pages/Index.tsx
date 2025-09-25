@@ -49,7 +49,7 @@ const Index = () => {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className="text-gradient-neural">NexusAI</span>
+              <span className="text-gradient-nexus">NexusAI</span>
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">

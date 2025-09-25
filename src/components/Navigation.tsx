@@ -41,7 +41,7 @@ export const Navigation = () => {
               <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center neural-glow">
                 <Bot className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-gradient-neural">NexusAI</span>
+              <span className="text-gradient-nexus">NexusAI</span>
             </Link>
             <div className="text-xs text-muted-foreground">
               Powered by CodeCatalysts
