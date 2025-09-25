@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import AuthModal from "@/components/AuthModal";
-import { supabase } from "@/integrations/supabase/client";
 import { ImageUpload } from "@/components/ImageUpload";
 
 interface SearchInterfaceProps {
@@ -27,7 +26,7 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
   const { user, loading } = useAuth();
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
     
@@ -38,33 +37,7 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
     
     // Allow search with text, image, or both
     if ((query.trim() || uploadedImage) && !isLoading && !isUploading && !isProcessing) {
-      try {
-        // Call the nexus-brain edge function for text queries
-        if (query.trim()) {
-          const { data, error } = await supabase.functions.invoke('nexus-brain', {
-            body: { instruction: query.trim() }
-          });
-          
-          if (error) throw error;
-          
-          if (data.success) {
-            // Pass the structured plan to the search handler
-            onSearch(query.trim(), uploadedImage || undefined, uploadedImageUrl || undefined);
-          } else {
-            throw new Error(data.error || 'Brain processing failed');
-          }
-        } else {
-          // For image-only searches, proceed normally
-          onSearch(query.trim(), uploadedImage || undefined, uploadedImageUrl || undefined);
-        }
-      } catch (error) {
-        console.error('Brain processing error:', error);
-        toast({
-          title: "Search Failed",
-          description: error instanceof Error ? error.message : "Failed to process your request",
-          variant: "destructive"
-        });
-      }
+      onSearch(query.trim(), uploadedImage || undefined, uploadedImageUrl || undefined);
     }
   };
 
