@@ -13,6 +13,23 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
+// Debug: Log the config to see what's being loaded
+console.log('Firebase Config:', {
+  apiKey: firebaseConfig.apiKey ? `${firebaseConfig.apiKey.substring(0, 10)}...` : 'undefined',
+  authDomain: firebaseConfig.authDomain,
+  projectId: firebaseConfig.projectId,
+  storageBucket: firebaseConfig.storageBucket,
+  messagingSenderId: firebaseConfig.messagingSenderId,
+  appId: firebaseConfig.appId ? `${firebaseConfig.appId.substring(0, 10)}...` : 'undefined',
+  measurementId: firebaseConfig.measurementId
+});
+
+// Check if required config is missing
+if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
+  console.error('Missing required Firebase configuration. Please check your .env.local file.');
+  throw new Error('Firebase configuration is incomplete');
+}
+
 // Initialize Firebase app if not already initialized
 let app;
 try {
