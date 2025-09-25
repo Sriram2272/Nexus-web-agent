@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Search, Mic, MicOff, Loader2, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
+import AuthModal from "@/components/AuthModal";
 
 interface SearchInterfaceProps {
   onSearch: (query: string) => void;
@@ -11,9 +13,18 @@ interface SearchInterfaceProps {
 export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterfaceProps) => {
   const [query, setQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user, loading } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
+    
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+    
     if (query.trim() && !isLoading) {
       onSearch(query.trim());
     }
@@ -120,6 +131,13 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
             <button
               key={index}
               onClick={() => {
+                if (loading) return;
+                
+                if (!user) {
+                  setShowAuthModal(true);
+                  return;
+                }
+                
                 setQuery(suggestion);
                 onSearch(suggestion);
               }}
@@ -151,6 +169,11 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
           <span>Replayable scripts</span>
         </div>
       </div>
+      
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+      />
     </div>
   );
 };
