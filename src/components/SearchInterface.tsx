@@ -88,24 +88,21 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
         });
       }, 100);
 
-      // TODO: Replace with actual upload to Supabase edge function
-      const response = await fetch('/api/image-upload', {
-        method: 'POST',
-        body: formData,
-      });
-
+      // Simulate image processing since we don't have a real backend yet
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       clearInterval(progressInterval);
       setUploadProgress(100);
       setIsUploading(false);
       setIsProcessing(true);
 
-      if (!response.ok) {
-        throw new Error(`Upload failed: ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      setUploadedImageUrl(result.imageUrl);
-      setExtractedText(result.extractedText);
+      // Simulate processing delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Create a local URL for the image
+      const imageUrl = URL.createObjectURL(file);
+      setUploadedImageUrl(imageUrl);
+      setExtractedText("Image processed successfully");
       setIsProcessing(false);
       
       toast({
@@ -116,7 +113,7 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
       // Auto-search after upload completes
       setTimeout(() => {
         if (query.trim() || file) {
-          onSearch(query.trim(), file, result.imageUrl);
+          onSearch(query.trim(), file, imageUrl);
         }
       }, 500);
       
@@ -255,6 +252,13 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
           </div>
         )}
       </form>
+
+      {/* Helper Text */}
+      <div className="text-center mb-6">
+        <p className="text-sm text-muted-foreground">
+          <em>Example: "Find laptops under 50k"</em>
+        </p>
+      </div>
 
       {/* Quick Search Suggestions */}
       <div className="text-center">

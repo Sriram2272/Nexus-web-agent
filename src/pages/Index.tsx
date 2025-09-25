@@ -96,52 +96,12 @@ const Index = () => {
         </section>
       )}
 
-      {/* Features Section */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gradient-primary">
-            Why NexusAI?
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6 rounded-xl glass-effect hover:shadow-accent transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-primary rounded-lg mx-auto mb-4 flex items-center justify-center">
-                <span className="text-xl">🔍</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Multi-Site Fusion</h3>
-              <p className="text-muted-foreground">
-                Search across multiple e-commerce platforms simultaneously with intelligent deduplication.
-              </p>
-            </div>
-            
-            <div className="text-center p-6 rounded-xl glass-effect hover:shadow-secondary transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-secondary rounded-lg mx-auto mb-4 flex items-center justify-center">
-                <span className="text-xl">🧠</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Explainable AI</h3>
-              <p className="text-muted-foreground">
-                Every result includes a human-readable trace showing exactly how it was found.
-              </p>
-            </div>
-            
-            <div className="text-center p-6 rounded-xl glass-effect hover:shadow-accent transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-accent rounded-lg mx-auto mb-4 flex items-center justify-center">
-                <span className="text-xl">🤖</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Replayable Scripts</h3>
-              <p className="text-muted-foreground">
-                Generate Playwright scripts to reproduce any search session automatically.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="py-8 bg-muted/5 border-t border-border">
         <div className="container mx-auto px-4 text-center">
           <p className="text-sm text-muted-foreground">
-            © 2025 CodeCatalysts. All rights reserved.
+            Powered by NexusAI • CodeCatalysts Team
           </p>
         </div>
       </footer>

@@ -70,9 +70,9 @@ export const Navigation = () => {
               );
             })}
             
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-sm">
-              <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-              <span>Local AI</span>
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-600/10 text-green-600 text-sm">
+              <div className="w-2 h-2 rounded-full bg-green-600"></div>
+              <span>Local Model: ON</span>
             </div>
 
             {/* Auth Section */}
@@ -145,9 +145,9 @@ export const Navigation = () => {
                 );
               })}
               
-              <div className="flex items-center gap-2 px-4 py-2 text-accent text-sm">
-                <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-                <span>Local AI</span>
+              <div className="flex items-center gap-2 px-4 py-2 text-green-600 text-sm">
+                <div className="w-2 h-2 rounded-full bg-green-600"></div>
+                <span>Local Model: ON</span>
               </div>
 
               {/* Mobile Auth */}
