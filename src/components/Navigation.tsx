@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Bot, History, Search, FileText } from "lucide-react";
+import { Menu, X, Bot, History, Search, FileText, LogIn, User, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const navItems = [
     { path: "/", label: "Search", icon: Search },
@@ -50,6 +60,41 @@ export const Navigation = () => {
               <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
               <span>Local AI</span>
             </div>
+
+            {/* Auth Section */}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    <span className="max-w-[100px] truncate">
+                      {user.email?.split('@')[0] || 'User'}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    {user.email}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    onClick={() => signOut()}
+                    className="flex items-center gap-2 text-destructive"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild variant="default" size="sm">
+                <Link to="/auth" className="flex items-center gap-2">
+                  <LogIn className="w-4 h-4" />
+                  Sign In
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -89,6 +134,41 @@ export const Navigation = () => {
               <div className="flex items-center gap-2 px-4 py-2 text-accent text-sm">
                 <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
                 <span>100% Local Processing</span>
+              </div>
+
+              {/* Mobile Auth */}
+              <div className="px-4 pt-2">
+                {user ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground">
+                      <User className="w-4 h-4" />
+                      {user.email}
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => {
+                        signOut();
+                        setIsOpen(false);
+                      }}
+                      className="w-full flex items-center gap-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <Button asChild variant="default" size="sm" className="w-full">
+                    <Link 
+                      to="/auth" 
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-2"
+                    >
+                      <LogIn className="w-4 h-4" />
+                      Sign In
+                    </Link>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
