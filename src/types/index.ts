@@ -64,3 +64,52 @@ export interface DemoStep {
   };
   duration: number;
 }
+
+// New types for extended functionality
+export type QueryType = 'product' | 'coding' | 'research' | 'general';
+
+export type AIToolMode = 'quick' | 'research' | 'learning' | 'study' | 'coding';
+
+export interface AIToolConfig {
+  mode: AIToolMode;
+  name: string;
+  description: string;
+  icon: string;
+}
+
+export interface CodingResult {
+  id: string;
+  problem: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  approaches: CodingApproach[];
+  relatedLinks: ProblemLink[];
+  timeComplexity: string;
+  spaceComplexity: string;
+  tags: string[];
+}
+
+export interface CodingApproach {
+  name: string;
+  language: 'C' | 'Python' | 'Java';
+  code: string;
+  explanation: string;
+  timeComplexity: string;
+  spaceComplexity: string;
+}
+
+export interface ProblemLink {
+  platform: 'LeetCode' | 'HackerRank' | 'CodeChef' | 'GeeksforGeeks';
+  title: string;
+  url: string;
+  difficulty: string;
+}
+
+export interface AIResponse {
+  id: string;
+  query: string;
+  mode: AIToolMode;
+  content: string;
+  references?: string[];
+  confidence: number;
+  processingTime: number;
+}
