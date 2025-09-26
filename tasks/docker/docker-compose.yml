@@ -1,0 +1,161 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: nexus-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - nexus_network
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: nexus-worker
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DEFAULT_QUEUE=default
+      - HIGH_PRIORITY_QUEUE=high
+      - WORKER_COUNT=2
+      - LOG_LEVEL=INFO
+      - SCHEDULER_ENABLED=true
+    volumes:
+      - ./tasks:/app/tasks
+      - worker_logs:/app/logs
+      - worker_exports:/app/exports
+    restart: unless-stopped
+    networks:
+      - nexus_network
+    command: python -m tasks.worker --queues default high
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: nexus-scheduler
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DEFAULT_QUEUE=default
+      - SCHEDULER_ENABLED=true
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./tasks:/app/tasks
+    restart: unless-stopped
+    networks:
+      - nexus_network
+    command: python -m tasks.scheduler
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: nexus-task-api
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DEFAULT_QUEUE=default
+      - HIGH_PRIORITY_QUEUE=high
+    volumes:
+      - ./tasks:/app/tasks
+      - api_logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - nexus_network
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Optional: RQ Dashboard for monitoring
+  dashboard:
+    image: eoranged/rq-dashboard:latest
+    container_name: nexus-rq-dashboard
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - "9181:9181"
+    environment:
+      - RQ_DASHBOARD_REDIS_URL=redis://redis:6379/0
+    networks:
+      - nexus_network
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+    driver: local
+  worker_logs:
+    driver: local
+  worker_exports:
+    driver: local
+  api_logs:
+    driver: local
+
+networks:
+  nexus_network:
+    driver: bridge
+
+# Production overrides (create docker-compose.prod.yml)
+# version: '3.8'
+# services:
+#   redis:
+#     volumes:
+#       - /data/redis:/data
+#     restart: always
+#   
+#   worker:
+#     environment:
+#       - WORKER_COUNT=4
+#       - LOG_LEVEL=WARNING
+#     deploy:
+#       replicas: 2
+#       resources:
+#         limits:
+#           memory: 1G
+#         reservations:
+#           memory: 512M
+#   
+#   api:
+#     environment:
+#       - LOG_LEVEL=WARNING
+#     deploy:
+#       replicas: 2
+
+# Development overrides (create docker-compose.dev.yml)
+# version: '3.8'  
+# services:
+#   worker:
+#     environment:
+#       - LOG_LEVEL=DEBUG
+#       - WORKER_COUNT=1
+#     volumes:
+#       - .:/app
+#     command: python -m tasks.worker --queues default high --log-level DEBUG
+#   
+#   api:
+#     environment:
+#       - LOG_LEVEL=DEBUG
+#     volumes:
+#       - .:/app
+#     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+
+# Usage:
+# Development: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+# Production: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d

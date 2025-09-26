@@ -1,0 +1,57 @@
+# Core task queue dependencies
+rq>=1.15.0
+redis>=4.5.0
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+pydantic>=2.0.0
+
+# Scheduling (optional - falls back to basic implementation)
+rq-scheduler>=0.13.0
+
+# Data processing
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+python-dateutil>=2.8.0
+
+# Configuration and utilities
+python-dotenv>=1.0.0
+click>=8.1.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.11.0
+
+# Optional monitoring
+# rq-dashboard  # Uncomment to enable web dashboard
+
+# Production WSGI server (alternative to uvicorn)
+# gunicorn>=21.0.0
+
+# Optional: Browser automation (if integrating with browser_service)
+# playwright>=1.40.0
+
+# Optional: Advanced job monitoring
+# prometheus-client>=0.17.0
+# statsd>=4.0.0
+
+# Optional: Database for job history
+# sqlalchemy>=2.0.0
+# psycopg2-binary>=2.9.0  # For PostgreSQL
+# sqlite3  # Built into Python
+
+# Optional: Enhanced logging
+# structlog>=23.0.0
+# coloredlogs>=15.0.0
+
+# Security
+cryptography>=41.0.0
+
+# Type hints
+typing-extensions>=4.7.0
+
+# Development tools (install separately in dev environment)
+# black>=23.0.0
+# isort>=5.12.0  
+# flake8>=6.0.0
+# mypy>=1.5.0
