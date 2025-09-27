@@ -7,6 +7,10 @@ import { Navigation } from "@/components/Navigation";
 import { AIToolsSelector } from "@/components/AIToolsSelector";
 import { CodingAssistant } from "@/components/CodingAssistant";
 import { AIResponseDisplay } from "@/components/AIResponseDisplay";
+import { VideoCallButton } from "@/components/VideoCallButton";
+import { CreateCallModal, type CallConfig } from "@/components/CreateCallModal";
+import { VideoCallScreen } from "@/components/VideoCallScreen";
+import { RecordingList } from "@/components/RecordingList";
 import { mockSearchResults, mockCodingResults, generateMockAIResponse } from "@/lib/mockData";
 import { detectQueryType, getSuggestedAIMode } from "@/utils/queryDetection";
 import { SearchResult, QueryType, AIToolMode, CodingResult, AIResponse } from "@/types";
@@ -21,6 +25,11 @@ const Index = () => {
   const [codingResults, setCodingResults] = useState<CodingResult[]>([]);
   const [aiResponse, setAiResponse] = useState<AIResponse | null>(null);
   const [suggestedModes, setSuggestedModes] = useState<string[]>([]);
+  
+  // Video call states
+  const [showCreateCall, setShowCreateCall] = useState(false);
+  const [activeCall, setActiveCall] = useState<CallConfig | null>(null);
+  const [showRecordings, setShowRecordings] = useState(false);
 
   const handleSearch = async (query: string, imageFile?: File, imageUrl?: string) => {
     setCurrentQuery(query);
@@ -81,6 +90,26 @@ const Index = () => {
     }
   };
 
+  const handleStartCall = (config: CallConfig) => {
+    setShowCreateCall(false);
+    setActiveCall(config);
+  };
+
+  const handleEndCall = (recording: any) => {
+    setActiveCall(null);
+    // Optionally show a success message or redirect to recordings
+  };
+
+  // If in active call, show video call screen
+  if (activeCall) {
+    return <VideoCallScreen config={activeCall} onEndCall={handleEndCall} />;
+  }
+
+  // If showing recordings, show recordings list
+  if (showRecordings) {
+    return <RecordingList onClose={() => setShowRecordings(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -105,6 +134,15 @@ const Index = () => {
               Search across multiple e-commerce sites simultaneously. Get ranked results, 
               explainable traces, and replayable automation scripts.
             </p>
+            
+            {/* Video Call Actions */}
+            <div className="flex justify-center gap-4 mb-8">
+              <VideoCallButton onClick={() => setShowCreateCall(true)} />
+              <VideoCallButton 
+                onClick={() => setShowRecordings(true)} 
+                variant="recordings"
+              />
+            </div>
 
           </div>
 
