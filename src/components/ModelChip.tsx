@@ -71,12 +71,10 @@ export const ModelChip = ({
           className="h-8 px-2 rounded-lg bg-card/50 border border-border/50 hover:bg-muted/20 transition-all duration-200"
           title={tooltipText}
         >
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1">
             <Circle className={`w-2 h-2 fill-current ${
-              isLocal ? 'text-success' : 
-              selectedModel ? 'text-warning' : 'text-destructive'
+              isLocal ? 'text-success' : 'text-warning'
             }`} />
-            <Bot className="w-3 h-3" />
             <span className="text-xs font-medium">
               {isLocal ? 'Local: ON' : 'Local: OFF'}
             </span>

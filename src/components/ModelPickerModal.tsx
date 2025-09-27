@@ -244,7 +244,7 @@ export const ModelPickerModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-hidden">
+      <DialogContent className="max-w-2xl max-h-[70vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>Model Picker</span>
@@ -291,7 +291,7 @@ export const ModelPickerModal = ({
             )}
           </div>
 
-          <div className="overflow-y-auto max-h-96 space-y-6">
+          <div className="overflow-y-auto max-h-64 space-y-4">
             {/* Local Models */}
             {localModels.length > 0 && (
               <div>
@@ -300,9 +300,9 @@ export const ModelPickerModal = ({
                   Local Models ({localModels.length})
                 </h3>
                 <RadioGroup value={primaryModel} onValueChange={(value) => setPrimaryModel(value)}>
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     {localModels.map((model) => (
-                      <div key={model.name} className="border rounded-lg p-4 hover:bg-muted/20">
+                      <div key={model.name} className="border rounded-lg p-3 hover:bg-muted/20">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3 flex-1">
                             <RadioGroupItem value={model.name} id={model.name} />
@@ -348,9 +348,9 @@ export const ModelPickerModal = ({
                   <Download className="w-3 h-3" />
                   Available to Download ({downloadableModels.length})
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {downloadableModels.map((model) => (
-                    <div key={model.name} className="border rounded-lg p-4 hover:bg-muted/20">
+                    <div key={model.name} className="border rounded-lg p-3 hover:bg-muted/20">
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
@@ -411,9 +411,9 @@ export const ModelPickerModal = ({
                   <Cloud className="w-3 h-3" />
                   Cloud Models ({cloudModels.length})
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {cloudModels.map((model) => (
-                    <div key={model.name} className="border rounded-lg p-4 hover:bg-muted/20 opacity-75">
+                    <div key={model.name} className="border rounded-lg p-3 hover:bg-muted/20 opacity-75">
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">

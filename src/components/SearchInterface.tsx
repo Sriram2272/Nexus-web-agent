@@ -31,9 +31,20 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load saved model preference from localStorage
-    const savedModel = localStorage.getItem('nexus_model_primary') || 'llama2:7b';
-    const downloadedModels = JSON.parse(localStorage.getItem('nexus_model_downloaded') || '["smollm2:135m", "llama2:7b", "general-local"]');
+    // Initialize with some local models by default
+    const defaultDownloaded = ['smollm2:135m', 'llama2:7b', 'general-local'];
+    const defaultPrimary = 'llama2:7b';
+    
+    // Set defaults if not already set
+    if (!localStorage.getItem('nexus_model_downloaded')) {
+      localStorage.setItem('nexus_model_downloaded', JSON.stringify(defaultDownloaded));
+    }
+    if (!localStorage.getItem('nexus_model_primary')) {
+      localStorage.setItem('nexus_model_primary', defaultPrimary);
+    }
+    
+    const savedModel = localStorage.getItem('nexus_model_primary') || defaultPrimary;
+    const downloadedModels = JSON.parse(localStorage.getItem('nexus_model_downloaded') || JSON.stringify(defaultDownloaded));
     
     setSelectedModel(savedModel);
     setIsLocalModel(downloadedModels.includes(savedModel));
