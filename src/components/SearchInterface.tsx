@@ -165,11 +165,11 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
 
   const quickSearches = [
     "32 inch smart TV under 30000",
-    "AI robot vacuum with mapping",
-    "VR headset for gaming 2024",
-    "smart home security cameras",
-    "electric scooter foldable",
-    "wireless charging power bank"
+    "best coding bootcamp online courses",
+    "home gym equipment for beginners",
+    "latest tech news today",
+    "python data structures tutorial",
+    "AI image generator tools 2024"
   ];
 
   return (
