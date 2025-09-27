@@ -208,7 +208,7 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={uploadedImage ? "Add text to your image search..." : "Search across multiple e-commerce sites..."}
+            placeholder={uploadedImage ? "Add text to your image search..." : "Type anything… NexusAI will search, rank, and explain it for you."}
             className="h-16 pl-6 pr-44 text-lg rounded-2xl border-2 border-border bg-card/50 backdrop-blur-sm focus:border-primary focus:shadow-neural transition-all duration-300"
             disabled={isLoading || isUploading || isProcessing}
           />

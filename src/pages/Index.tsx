@@ -167,8 +167,7 @@ const Index = () => {
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Search across multiple e-commerce sites simultaneously. Get ranked results, 
-              explainable traces, and replayable automation scripts.
+              Your AI-powered web navigator — search, automate, and explore smarter than ever.
             </p>
             
             {/* Video Call Actions */}
