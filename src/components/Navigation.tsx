@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Bot, History, Search, FileText, LogIn, User, LogOut } from "lucide-react";
+import { Menu, X, Bot, History, Search, FileText, LogIn, User, LogOut, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { signOut as firebaseSignOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useAuth } from "@/contexts/AuthContext";
+import { UpgradeModal } from "@/components/UpgradeModal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +16,7 @@ import {
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const { user } = useAuth();
   const location = useLocation();
 
@@ -93,6 +95,14 @@ export const Navigation = () => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 
+                    onClick={() => setShowUpgradeModal(true)}
+                    className="flex items-center gap-2 text-primary"
+                  >
+                    <Crown className="w-4 h-4" />
+                    Upgrade Plan
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
                     onClick={handleSignOut}
                     className="flex items-center gap-2 text-destructive"
                   >
@@ -162,6 +172,18 @@ export const Navigation = () => {
                       variant="outline" 
                       size="sm" 
                       onClick={() => {
+                        setShowUpgradeModal(true);
+                        setIsOpen(false);
+                      }}
+                      className="w-full flex items-center gap-2 text-primary"
+                    >
+                      <Crown className="w-4 h-4" />
+                      Upgrade Plan
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => {
                         handleSignOut();
                         setIsOpen(false);
                       }}
@@ -188,6 +210,12 @@ export const Navigation = () => {
           </div>
         )}
       </div>
+
+      {/* Upgrade Modal */}
+      <UpgradeModal 
+        isOpen={showUpgradeModal} 
+        onClose={() => setShowUpgradeModal(false)} 
+      />
     </nav>
   );
 };
