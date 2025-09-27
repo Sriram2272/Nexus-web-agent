@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { SearchInterface } from "@/components/SearchInterface";
-import { LocalModelBadge } from "@/components/LocalModelBadge";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { ExportPanel } from "@/components/ExportPanel";
 import { DemoMode } from "@/components/DemoMode";

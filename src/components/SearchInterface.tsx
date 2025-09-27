@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import AuthModal from "@/components/AuthModal";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ModelChip } from "@/components/ModelChip";
-import { checkOllamaStatus, getModelPreference, saveModelPreference } from "@/lib/ollamaApi";
+// Removed Ollama API imports for UI-only implementation
 
 interface SearchInterfaceProps {
   onSearch: (query: string, imageFile?: File, imageUrl?: string, model?: string) => void;
@@ -31,13 +31,12 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load saved model preference and check Ollama status
-    const savedModel = getModelPreference();
-    setSelectedModel(savedModel);
+    // Load saved model preference from localStorage
+    const savedModel = localStorage.getItem('nexus_model_primary') || 'llama2:7b';
+    const downloadedModels = JSON.parse(localStorage.getItem('nexus_model_downloaded') || '["smollm2:135m", "llama2:7b", "general-local"]');
     
-    checkOllamaStatus().then(status => {
-      setIsLocalModel(status.isLocal && status.localModels > 0);
-    });
+    setSelectedModel(savedModel);
+    setIsLocalModel(downloadedModels.includes(savedModel));
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -210,7 +209,7 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
               onModelChange={(model, isLocal) => {
                 setSelectedModel(model);
                 setIsLocalModel(isLocal);
-                saveModelPreference(model);
+                // No need to save here as ModelPickerModal handles localStorage
               }}
               disabled={isLoading || isUploading || isProcessing}
             />
