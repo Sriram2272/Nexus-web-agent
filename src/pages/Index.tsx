@@ -171,7 +171,15 @@ const Index = () => {
 
   // If showing recordings, show recordings list
   if (showRecordings) {
-    return <RecordingList onClose={() => setShowRecordings(false)} />;
+    return (
+      <RecordingList 
+        onClose={() => setShowRecordings(false)}
+        onStartDemo={() => {
+          setShowRecordings(false);
+          setShowFieldSelection(true);
+        }}
+      />
+    );
   }
 
   return (

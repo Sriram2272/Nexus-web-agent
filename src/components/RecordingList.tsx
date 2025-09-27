@@ -32,9 +32,10 @@ interface Recording {
 
 interface RecordingListProps {
   onClose: () => void;
+  onStartDemo: () => void;
 }
 
-export function RecordingList({ onClose }: RecordingListProps) {
+export function RecordingList({ onClose, onStartDemo }: RecordingListProps) {
   const [recordings, setRecordings] = useState<Recording[]>([]);
   const [playingRecording, setPlayingRecording] = useState<Recording | null>(null);
   const [showingSummary, setShowingSummary] = useState<Recording | null>(null);
@@ -219,7 +220,7 @@ export function RecordingList({ onClose }: RecordingListProps) {
             <p className="text-muted-foreground mb-6">
               Start an AI video call to create your first recording.
             </p>
-            <Button onClick={onClose}>Start Your First Call</Button>
+            <Button onClick={onStartDemo}>Start Your First Call</Button>
           </Card>
         ) : (
           <div className="space-y-4">
