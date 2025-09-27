@@ -37,13 +37,13 @@ export function VideoCallButton({ onClick, variant = 'start', className }: Video
     >
       <div className="flex items-center gap-2">
         <Video className="w-4 h-4" />
-        <span className="font-medium">Start AI Video Call</span>
+        <span className="font-medium">Start Demo Call</span>
         <Sparkles className="w-3 h-3 opacity-80" />
       </div>
       
       {/* Demo badge */}
       <div className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs px-1.5 py-0.5 rounded-full font-medium">
-        Demo
+        Auto
       </div>
     </Button>
   );

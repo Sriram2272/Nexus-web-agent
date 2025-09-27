@@ -10,7 +10,9 @@ import { AIResponseDisplay } from "@/components/AIResponseDisplay";
 import { VideoCallButton } from "@/components/VideoCallButton";
 import { CreateCallModal, type CallConfig } from "@/components/CreateCallModal";
 import { VideoCallScreen } from "@/components/VideoCallScreen";
+import { AutoDemoVideoCall } from "@/components/AutoDemoVideoCall";
 import { RecordingList } from "@/components/RecordingList";
+import { personas } from "@/data/personas";
 import { mockSearchResults, mockCodingResults, generateMockAIResponse } from "@/lib/mockData";
 import { detectQueryType, getSuggestedAIMode } from "@/utils/queryDetection";
 import { SearchResult, QueryType, AIToolMode, CodingResult, AIResponse } from "@/types";
@@ -95,14 +97,27 @@ const Index = () => {
     setActiveCall(config);
   };
 
-  const handleEndCall = (recording: any) => {
-    setActiveCall(null);
-    // Optionally show a success message or redirect to recordings
+  const handleStartDemoCall = () => {
+    // Start demo call directly without modal
+    const demoConfig: CallConfig = {
+      persona: personas[0], // Health Coach
+      title: 'Demo Health Consultation',
+      duration: 30,
+      voice: 'default',
+      enableMic: false
+    };
+    setActiveCall(demoConfig);
   };
 
-  // If in active call, show video call screen
+  const handleEndCall = (recording: any) => {
+    setActiveCall(null);
+    // Show recordings after demo call
+    setShowRecordings(true);
+  };
+
+  // If in active call, show auto demo video call screen
   if (activeCall) {
-    return <VideoCallScreen config={activeCall} onEndCall={handleEndCall} />;
+    return <AutoDemoVideoCall config={activeCall} onEndCall={handleEndCall} />;
   }
 
   // If showing recordings, show recordings list
@@ -137,7 +152,7 @@ const Index = () => {
             
             {/* Video Call Actions */}
             <div className="flex justify-center gap-4 mb-8">
-              <VideoCallButton onClick={() => setShowCreateCall(true)} />
+              <VideoCallButton onClick={handleStartDemoCall} />
               <VideoCallButton 
                 onClick={() => setShowRecordings(true)} 
                 variant="recordings"
