@@ -311,6 +311,20 @@ const Index = () => {
           </p>
         </div>
       </footer>
+
+      {/* Field Selection Modal */}
+      <FieldSelectionModal
+        isOpen={showFieldSelection}
+        onClose={() => setShowFieldSelection(false)}
+        onSelectField={handleFieldSelection}
+      />
+
+      {/* Create Call Modal (optional manual mode) */}
+      <CreateCallModal
+        isOpen={showCreateCall}
+        onClose={() => setShowCreateCall(false)}
+        onStartCall={handleStartCall}
+      />
     </div>
   );
 };
