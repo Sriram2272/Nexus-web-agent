@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Search, Mic, MicOff, Loader2, Zap, Image as ImageIcon, X } from "lucide-react";
+import { Search, Mic, MicOff, Loader2, Zap, Image as ImageIcon, X, Monitor, GraduationCap, Dumbbell, Newspaper, Code2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
@@ -164,12 +164,48 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
   };
 
   const quickSearches = [
-    "32 inch smart TV under 30000",
-    "best coding bootcamp online courses",
-    "home gym equipment for beginners",
-    "latest tech news today",
-    "python data structures tutorial",
-    "AI image generator tools 2024"
+    {
+      query: "32 inch smart TV under 30000",
+      category: "Tech",
+      description: "Smart TVs with 4K, HDR support",
+      icon: "Monitor",
+      color: "bg-blue-500/10 text-blue-600 border-blue-200"
+    },
+    {
+      query: "best coding bootcamp online courses",
+      category: "Education", 
+      description: "Full-stack development programs",
+      icon: "GraduationCap",
+      color: "bg-green-500/10 text-green-600 border-green-200"
+    },
+    {
+      query: "home gym equipment for beginners",
+      category: "Fitness",
+      description: "Dumbbells, resistance bands, yoga mats",
+      icon: "Dumbbell",
+      color: "bg-orange-500/10 text-orange-600 border-orange-200"
+    },
+    {
+      query: "latest tech news today",
+      category: "News",
+      description: "AI, gadgets, startup updates",
+      icon: "Newspaper",
+      color: "bg-purple-500/10 text-purple-600 border-purple-200"
+    },
+    {
+      query: "python data structures tutorial",
+      category: "Coding",
+      description: "Lists, dictionaries, algorithms",
+      icon: "Code2",
+      color: "bg-red-500/10 text-red-600 border-red-200"
+    },
+    {
+      query: "AI image generator tools 2024",
+      category: "AI",
+      description: "DALL-E, Midjourney, Stable Diffusion",
+      icon: "Sparkles",
+      color: "bg-pink-500/10 text-pink-600 border-pink-200"
+    }
   ];
 
   return (
@@ -298,28 +334,56 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
 
       {/* Quick Search Suggestions */}
       <div className="text-center">
-        <p className="text-sm text-muted-foreground mb-4">Try these popular searches:</p>
-        <div className="flex flex-wrap justify-center gap-2">
-          {quickSearches.map((suggestion, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                if (loading) return;
-                
-                if (!user) {
-                  setShowAuthModal(true);
-                  return;
-                }
-                
-                setQuery(suggestion);
-                onSearch(suggestion, undefined, undefined, selectedModel);
-              }}
-              disabled={isLoading}
-              className="px-4 py-2 text-sm rounded-full border border-border bg-card/30 hover:bg-muted/20 text-muted-foreground hover:text-foreground transition-all duration-300 disabled:opacity-50"
-            >
-              {suggestion}
-            </button>
-          ))}
+        <p className="text-sm text-muted-foreground mb-6">Try these popular searches:</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+          {quickSearches.map((search, index) => {
+            const IconComponent = {
+              Monitor,
+              GraduationCap,
+              Dumbbell,
+              Newspaper,
+              Code2,
+              Sparkles
+            }[search.icon as keyof typeof IconComponent] || Search;
+
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  if (loading) return;
+                  
+                  if (!user) {
+                    setShowAuthModal(true);
+                    return;
+                  }
+                  
+                  setQuery(search.query);
+                  onSearch(search.query, undefined, undefined, selectedModel);
+                }}
+                disabled={isLoading}
+                className={`group p-4 rounded-xl border-2 transition-all duration-300 hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none text-left ${search.color}`}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 p-2 rounded-lg bg-current/10">
+                    <IconComponent className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-current/10">
+                        {search.category}
+                      </span>
+                    </div>
+                    <h3 className="font-medium text-sm mb-1 group-hover:text-current transition-colors line-clamp-2">
+                      {search.query}
+                    </h3>
+                    <p className="text-xs opacity-70 line-clamp-2">
+                      {search.description}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
