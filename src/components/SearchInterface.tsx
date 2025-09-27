@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Search, Mic, MicOff, Loader2, Zap, Image as ImageIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,9 +6,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import AuthModal from "@/components/AuthModal";
 import { ImageUpload } from "@/components/ImageUpload";
+import { ModelChip } from "@/components/ModelChip";
+import { checkOllamaStatus, getModelPreference, saveModelPreference } from "@/lib/ollamaApi";
 
 interface SearchInterfaceProps {
-  onSearch: (query: string, imageFile?: File, imageUrl?: string) => void;
+  onSearch: (query: string, imageFile?: File, imageUrl?: string, model?: string) => void;
   isLoading?: boolean;
 }
 
@@ -23,8 +25,20 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
   const [isProcessing, setIsProcessing] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [extractedText, setExtractedText] = useState<string | null>(null);
+  const [selectedModel, setSelectedModel] = useState("llama2");
+  const [isLocalModel, setIsLocalModel] = useState(false);
   const { user, loading } = useAuth();
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Load saved model preference and check Ollama status
+    const savedModel = getModelPreference();
+    setSelectedModel(savedModel);
+    
+    checkOllamaStatus().then(status => {
+      setIsLocalModel(status.isLocal && status.localModels > 0);
+    });
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +51,7 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
     
     // Allow search with text, image, or both
     if ((query.trim() || uploadedImage) && !isLoading && !isUploading && !isProcessing) {
-      onSearch(query.trim(), uploadedImage || undefined, uploadedImageUrl || undefined);
+      onSearch(query.trim(), uploadedImage || undefined, uploadedImageUrl || undefined, selectedModel);
     }
   };
 
@@ -113,7 +127,7 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
       // Auto-search after upload completes
       setTimeout(() => {
         if (query.trim() || file) {
-          onSearch(query.trim(), file, imageUrl);
+          onSearch(query.trim(), file, imageUrl, selectedModel);
         }
       }, 500);
       
@@ -190,6 +204,17 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
           />
           
           <div className="absolute right-2 top-2 flex items-center gap-2">
+            <ModelChip 
+              selectedModel={selectedModel}
+              isLocal={isLocalModel}
+              onModelChange={(model, isLocal) => {
+                setSelectedModel(model);
+                setIsLocalModel(isLocal);
+                saveModelPreference(model);
+              }}
+              disabled={isLoading || isUploading || isProcessing}
+            />
+            
             <Button
               type="button"
               variant="ghost"
@@ -276,7 +301,7 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
                 }
                 
                 setQuery(suggestion);
-                onSearch(suggestion);
+                onSearch(suggestion, undefined, undefined, selectedModel);
               }}
               disabled={isLoading}
               className="px-4 py-2 text-sm rounded-full border border-border bg-card/30 hover:bg-muted/20 text-muted-foreground hover:text-foreground transition-all duration-300 disabled:opacity-50"
