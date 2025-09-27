@@ -165,10 +165,11 @@ export const SearchInterface = ({ onSearch, isLoading = false }: SearchInterface
 
   const quickSearches = [
     "32 inch smart TV under 30000",
-    "gaming laptop RTX 4060",
-    "wireless earbuds noise cancelling",
-    "iPhone 15 Pro best price",
-    "coffee machine automatic"
+    "AI robot vacuum with mapping",
+    "VR headset for gaming 2024",
+    "smart home security cameras",
+    "electric scooter foldable",
+    "wireless charging power bank"
   ];
 
   return (
