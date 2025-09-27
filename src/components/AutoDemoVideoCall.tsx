@@ -43,79 +43,79 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
   
   const transcriptEndRef = useRef<HTMLDivElement>(null);
 
-  // Demo conversation script - Fast 20-second version (4 conversations, ~5 seconds each)
+  // Demo conversation script - Simple English, slower pace
   const getDemoScriptForField = (fieldId: string) => {
     const baseScripts: Record<string, any> = {
       'healthcare': [
         {
-          user: "I have a headache and feel tired. What should I do?",
-          ai: "That could be dehydration or stress. Try drinking water, rest, and see a doctor if it persists."
+          user: "Hi, I have a headache. What can I do?",
+          ai: "Hello! Try drinking water and rest. If it gets worse, see a doctor."
         },
         {
-          user: "Should I be worried about these symptoms?",
-          ai: "Monitor them closely. If they worsen or you get fever, definitely consult a healthcare provider."
+          user: "Should I take medicine?",
+          ai: "You can try basic pain medicine. But ask a doctor first if you're not sure."
         },
         {
-          user: "Any immediate remedies I can try?",
-          ai: "Rest in a quiet, dark room, stay hydrated, and consider a gentle neck massage."
+          user: "When should I see a doctor?",
+          ai: "See a doctor if the pain is very bad or lasts more than 2 days."
         },
         {
-          user: "Thank you for the advice!",
-          ai: "You're welcome! Remember, always consult a doctor for persistent health concerns."
+          user: "Thank you for helping me.",
+          ai: "You're welcome! Take care of yourself and feel better soon!"
         }
       ],
       'fitness': [
         {
-          user: "I want to start working out but I'm a complete beginner.",
-          ai: "Great decision! Start with 20-30 minutes, 3 times per week. Focus on bodyweight exercises first."
+          user: "I want to start exercise. Where do I begin?",
+          ai: "Great! Start with 15 minutes of walking every day. That's a good beginning."
         },
         {
-          user: "What exercises should I begin with?",
-          ai: "Try squats, push-ups (modified if needed), planks, and walking. Build consistency before intensity."
+          user: "What other exercises can I do?",
+          ai: "Try simple things like push-ups, sit-ups, and stretching. Start slow."
         },
         {
-          user: "How do I stay motivated?",
-          ai: "Set small, achievable goals. Track your progress and celebrate every workout completed!"
+          user: "How often should I exercise?",
+          ai: "3 times a week is perfect for beginners. Don't do too much at first."
         },
         {
-          user: "Thanks for the encouragement!",
-          ai: "You've got this! Remember, the hardest part is just starting. Every step counts!"
+          user: "Thanks for the simple advice!",
+          ai: "You're welcome! Remember, small steps every day make big changes!"
         }
       ],
       'diet': [
         {
-          user: "I want to eat healthier but don't know where to start.",
-          ai: "Start simple! Fill half your plate with vegetables, add lean protein, and choose whole grains."
+          user: "I want to eat better food. How do I start?",
+          ai: "Good choice! Start by eating more fruits and vegetables every day."
         },
         {
-          user: "Any tips for meal planning?",
-          ai: "Plan 3-4 go-to meals, prep on weekends, and keep healthy snacks ready. Start small!"
+          user: "What should I avoid eating?",
+          ai: "Try to eat less fast food and sugary drinks. Cook at home more."
         },
         {
-          user: "What about budget-friendly healthy eating?",
-          ai: "Focus on beans, eggs, seasonal vegetables, and frozen fruits. Buy in bulk when possible."
+          user: "Is it hard to eat healthy?",
+          ai: "Not really! Make small changes. Replace chips with fruits for snacks."
         },
         {
-          user: "This seems manageable, thank you!",
-          ai: "Absolutely! Small changes lead to big results. You're already on the right track!"
+          user: "That sounds easy to do!",
+          ai: "Exactly! Small changes are the best way. You can do it!"
         }
       ],
       'education': [
         {
-          user: "I struggle to retain information when studying. Any tips?",
-          ai: "Try active learning! Explain concepts out loud, use flashcards, and take regular breaks."
+          user: "I have trouble studying. Can you help?",
+          ai: "Of course! Try studying for 20 minutes, then take a 5-minute break."
         },
         {
-          user: "How should I structure my study sessions?",
-          ai: "Use the Pomodoro technique: 25 minutes focused study, then 5-minute breaks. Very effective!"
+          user: "I get distracted when I study.",
+          ai: "Put your phone away and find a quiet place. That helps a lot."
         },
         {
-          user: "I get distracted easily while studying.",
-          ai: "Create a dedicated study space, put your phone away, and use website blockers if needed."
+          user: "How can I remember things better?",
+          ai: "Write notes by hand and read them out loud. It helps your brain remember."
         },
         {
-          user: "These are really practical suggestions!",
-          ai: "Consistency is key! Start with just one technique and build from there. You can do this!"
+          user: "These tips are really helpful!",
+          ai: "I'm glad to help! Practice these tips and you'll get better at studying!"
         }
       ]
     };
@@ -175,10 +175,10 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
           };
           setTranscript(prev => [...prev, aiEntry]);
 
-          // Speak the AI response
+          // Speak the AI response slower
           if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(step.ai);
-            utterance.rate = 1.5; // Faster speech for 20-second demo
+            utterance.rate = 0.8; // Slower speech for better understanding
             utterance.pitch = 1;
             speechSynthesis.speak(utterance);
           }
@@ -267,7 +267,7 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
         <div className="flex items-center gap-4">
           <Badge variant="default" className="flex items-center gap-1">
             <Circle className="w-2 h-2 animate-pulse fill-destructive text-destructive" />
-            Demo Running
+            Live Demo Call
           </Badge>
           <span className="text-sm font-mono">{formatTime(elapsedTime)}</span>
         </div>
@@ -298,7 +298,7 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
                   <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
                 <span className="text-xs text-muted-foreground ml-2">
-                  {isPlaying ? 'Running Demo Conversation...' : 'Demo Starting...'}
+                  {isPlaying ? 'Having Demo Call...' : 'Demo Starting...'}
                 </span>
               </div>
             </div>
@@ -361,13 +361,13 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
             {isPlaying ? 'Pause Demo' : 'Resume Demo'}
           </Button>
 
-          <Button
-            variant="destructive"
-            onClick={handleEndCall}
-          >
-            <Phone className="w-4 h-4 mr-2" />
-            End Demo & View Summary
-          </Button>
+            <Button
+              variant="destructive"
+              onClick={handleEndCall}
+            >
+              <Phone className="w-4 h-4 mr-2" />
+              End Call & View Summary
+            </Button>
         </div>
       </div>
     </div>

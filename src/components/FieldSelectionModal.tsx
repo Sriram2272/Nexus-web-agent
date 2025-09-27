@@ -151,10 +151,10 @@ export function FieldSelectionModal({ isOpen, onClose, onSelectField }: FieldSel
           <DialogTitle className="flex items-center gap-2">
             <Clock className="w-5 h-5" />
             Choose Demo Field
-            <Badge variant="secondary" className="ml-auto">Auto Generate 3 Recordings</Badge>
+            <Badge variant="secondary" className="ml-auto">Start Live Call</Badge>
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-2">
-            Select a field to generate demo conversations. We'll automatically create 3 different recordings for you to explore.
+            Select a field to start a live demo call. Experience real conversations with AI assistance.
           </p>
         </DialogHeader>
 
@@ -270,8 +270,8 @@ export function FieldSelectionModal({ isOpen, onClose, onSelectField }: FieldSel
           {/* Demo Notice */}
           <div className="bg-accent/20 border border-accent rounded-lg p-3">
             <p className="text-sm text-accent-foreground">
-              <strong>Auto Demo:</strong> We'll generate 3 demo conversations based on your selected field. 
-              Each recording will showcase different scenarios and be saved for you to review.
+              <strong>Live Demo Call:</strong> Experience a real conversation with our AI assistant. 
+              The call will be saved automatically for you to review later.
             </p>
           </div>
 
@@ -285,7 +285,7 @@ export function FieldSelectionModal({ isOpen, onClose, onSelectField }: FieldSel
               disabled={!selectedField}
               className="flex-1 bg-gradient-to-r from-primary to-primary/80"
             >
-              Generate 3 Demo Recordings
+              Start Demo Call
             </Button>
           </div>
         </div>
