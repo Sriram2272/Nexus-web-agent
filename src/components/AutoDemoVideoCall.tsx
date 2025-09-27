@@ -43,25 +43,90 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
   
   const transcriptEndRef = useRef<HTMLDivElement>(null);
 
-  // Demo conversation script
-  const demoScript = [
-    {
-      user: "Hi there! I'm looking to improve my health and fitness. Can you help me?",
-      ai: "Hello! I'm absolutely delighted to help you on your health journey! As your Health Coach, I'm here to provide you with personalized guidance. Let's start by understanding your current situation - what are your main health and fitness goals right now?"
-    },
-    {
-      user: "I want to lose about 15 pounds and build some muscle. I haven't exercised in a while.",
-      ai: "That's a fantastic and achievable goal! Losing 15 pounds while building muscle is definitely doable with the right approach. Since you're getting back into exercise, we'll want to start gradually to avoid injury. I recommend beginning with 3 workouts per week - combining strength training with some cardio. What's your current daily routine like?"
-    },
-    {
-      user: "I work a desk job, so I'm pretty sedentary. I usually eat out for lunch too.",
-      ai: "I completely understand - desk jobs can make staying active challenging! The good news is that small changes can make a huge impact. For your sedentary lifestyle, try the '50/10 rule' - every 50 minutes, take a 10-minute walk or do some stretches. For nutrition, meal prepping can be a game-changer instead of eating out. Would you like me to suggest some simple meal prep ideas?"
-    },
-    {
-      user: "Yes, that would be great! I'm not much of a cook though.",
-      ai: "Perfect! Let's keep it simple and beginner-friendly. Try these easy meal prep ideas: overnight oats with berries for breakfast, grilled chicken with roasted vegetables for lunch, and quinoa bowls with whatever protein you prefer. Start with just prepping 2-3 days at a time. The key is consistency over perfection. Remember, you're building sustainable habits that will last a lifetime!"
-    }
-  ];
+  // Demo conversation script - Fast 20-second version (4 conversations, ~5 seconds each)
+  const getDemoScriptForField = (fieldId: string) => {
+    const baseScripts: Record<string, any> = {
+      'healthcare': [
+        {
+          user: "I have a headache and feel tired. What should I do?",
+          ai: "That could be dehydration or stress. Try drinking water, rest, and see a doctor if it persists."
+        },
+        {
+          user: "Should I be worried about these symptoms?",
+          ai: "Monitor them closely. If they worsen or you get fever, definitely consult a healthcare provider."
+        },
+        {
+          user: "Any immediate remedies I can try?",
+          ai: "Rest in a quiet, dark room, stay hydrated, and consider a gentle neck massage."
+        },
+        {
+          user: "Thank you for the advice!",
+          ai: "You're welcome! Remember, always consult a doctor for persistent health concerns."
+        }
+      ],
+      'fitness': [
+        {
+          user: "I want to start working out but I'm a complete beginner.",
+          ai: "Great decision! Start with 20-30 minutes, 3 times per week. Focus on bodyweight exercises first."
+        },
+        {
+          user: "What exercises should I begin with?",
+          ai: "Try squats, push-ups (modified if needed), planks, and walking. Build consistency before intensity."
+        },
+        {
+          user: "How do I stay motivated?",
+          ai: "Set small, achievable goals. Track your progress and celebrate every workout completed!"
+        },
+        {
+          user: "Thanks for the encouragement!",
+          ai: "You've got this! Remember, the hardest part is just starting. Every step counts!"
+        }
+      ],
+      'diet': [
+        {
+          user: "I want to eat healthier but don't know where to start.",
+          ai: "Start simple! Fill half your plate with vegetables, add lean protein, and choose whole grains."
+        },
+        {
+          user: "Any tips for meal planning?",
+          ai: "Plan 3-4 go-to meals, prep on weekends, and keep healthy snacks ready. Start small!"
+        },
+        {
+          user: "What about budget-friendly healthy eating?",
+          ai: "Focus on beans, eggs, seasonal vegetables, and frozen fruits. Buy in bulk when possible."
+        },
+        {
+          user: "This seems manageable, thank you!",
+          ai: "Absolutely! Small changes lead to big results. You're already on the right track!"
+        }
+      ],
+      'education': [
+        {
+          user: "I struggle to retain information when studying. Any tips?",
+          ai: "Try active learning! Explain concepts out loud, use flashcards, and take regular breaks."
+        },
+        {
+          user: "How should I structure my study sessions?",
+          ai: "Use the Pomodoro technique: 25 minutes focused study, then 5-minute breaks. Very effective!"
+        },
+        {
+          user: "I get distracted easily while studying.",
+          ai: "Create a dedicated study space, put your phone away, and use website blockers if needed."
+        },
+        {
+          user: "These are really practical suggestions!",
+          ai: "Consistency is key! Start with just one technique and build from there. You can do this!"
+        }
+      ]
+    };
+
+    // Return script for field or default healthcare script
+    return baseScripts[fieldId] || baseScripts['healthcare'];
+  };
+
+  const demoScript = config.demoField 
+    ? getDemoScriptForField(config.demoField.id)
+    : getDemoScriptForField('healthcare');
 
   // Timer
   useEffect(() => {
@@ -100,7 +165,7 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
         };
         setTranscript(prev => [...prev, userEntry]);
 
-        // After 2 seconds, add AI response
+        // After 1 second, add AI response
         setTimeout(() => {
           const aiEntry: TranscriptEntry = {
             id: Math.random().toString(36).substr(2, 9),
@@ -113,16 +178,16 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
           // Speak the AI response
           if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(step.ai);
-            utterance.rate = 1.1;
+            utterance.rate = 1.5; // Faster speech for 20-second demo
             utterance.pitch = 1;
             speechSynthesis.speak(utterance);
           }
 
-          // Move to next step after AI finishes speaking
+          // Move to next step after 4 seconds (total ~5 seconds per conversation)
           setTimeout(() => {
             setCurrentStep(prev => prev + 1);
-          }, 3000);
-        }, 2000);
+          }, 4000);
+        }, 1000);
       };
 
       // Start the conversation
@@ -134,7 +199,7 @@ export function AutoDemoVideoCall({ config, onEndCall }: AutoDemoVideoCallProps)
   useEffect(() => {
     const autoStart = setTimeout(() => {
       setIsPlaying(true);
-    }, 2000);
+    }, 1000); // Start faster
 
     return () => clearTimeout(autoStart);
   }, []);

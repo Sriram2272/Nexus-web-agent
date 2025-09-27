@@ -108,46 +108,18 @@ const Index = () => {
 
   const handleFieldSelection = (field: DemoField) => {
     setShowFieldSelection(false);
-    setIsGeneratingDemos(true);
     
-    // Generate 3 demo recordings for the selected field
-    setTimeout(() => {
-      const demoScripts = getDemoScriptsForField(field);
-      const recordings = demoScripts.map((script, index) => {
-        const startTime = Date.now() - ((index + 1) * 300000); // Stagger times
-        const transcript = script.conversations.flatMap((conv, convIndex) => [
-          {
-            id: Math.random().toString(36).substr(2, 9),
-            timestamp: (convIndex * 2) * 30000, // 30s intervals
-            speaker: 'user' as const,
-            text: conv.user
-          },
-          {
-            id: Math.random().toString(36).substr(2, 9),
-            timestamp: (convIndex * 2 + 1) * 30000,
-            speaker: 'ai' as const,
-            text: conv.ai
-          }
-        ]);
-        
-        return {
-          id: Math.random().toString(36).substr(2, 9),
-          title: script.title,
-          persona: script.persona,
-          transcript,
-          createdAt: startTime,
-          duration: transcript.length * 30000
-        };
-      });
-      
-      // Save recordings to localStorage
-      const existingRecordings = JSON.parse(localStorage.getItem('nexus_demo_calls') || '[]');
-      const allRecordings = [...existingRecordings, ...recordings];
-      localStorage.setItem('nexus_demo_calls', JSON.stringify(allRecordings));
-      
-      setIsGeneratingDemos(false);
-      setShowRecordings(true);
-    }, 3000); // Show loading for 3 seconds
+    // Start a live demo call with the selected field
+    const demoConfig: CallConfig = {
+      persona: personas.find(p => p.id === 'health-coach') || personas[0], // Use health coach or first persona
+      title: `${field.name} Demo Call`,
+      duration: 20, // 20 seconds total
+      voice: 'default',
+      enableMic: false,
+      demoField: field // Pass the selected field
+    };
+    
+    setActiveCall(demoConfig);
   };
 
   const handleEndCall = (recording: any) => {
@@ -156,17 +128,9 @@ const Index = () => {
     setShowRecordings(true);
   };
 
-  // If generating demos, show loading screen
-  if (isGeneratingDemos) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
-          <h2 className="text-2xl font-semibold">Generating Demo Recordings</h2>
-          <p className="text-muted-foreground">Creating 3 different conversation scenarios...</p>
-        </div>
-      </div>
-    );
+  // If in active call, show auto demo video call screen
+  if (activeCall) {
+    return <AutoDemoVideoCall config={activeCall} onEndCall={handleEndCall} />;
   }
 
   // If showing recordings, show recordings list

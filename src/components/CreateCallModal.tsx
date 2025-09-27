@@ -22,6 +22,7 @@ export interface CallConfig {
   duration: number;
   voice: string;
   enableMic: boolean;
+  demoField?: any; // Optional field for demo calls
 }
 
 export function CreateCallModal({ isOpen, onClose, onStartCall }: CreateCallModalProps) {
